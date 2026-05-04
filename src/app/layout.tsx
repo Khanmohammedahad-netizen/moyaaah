@@ -10,15 +10,19 @@ export const metadata: Metadata = {
   description: "Experience the most iconic smashed burgers and buff steaks in Hyderabad. A cosmic flavor fiesta awaits.",
 };
 
+import SmoothScroll from "@/components/SmoothScroll";
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" className="scroll-smooth">
       <body className={`${inter.variable} ${outfit.variable} antialiased`}>
-        {children}
+        <SmoothScroll>
+          {children}
+        </SmoothScroll>
       </body>
     </html>
   );

@@ -10,107 +10,116 @@ const GALLERY_IMAGES = Array.from({ length: 20 }, (_, i) => `/gallery/img_${(i +
 
 export default function RevolvingGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const galleryRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
+  const column1Ref = useRef<HTMLDivElement>(null);
+  const column2Ref = useRef<HTMLDivElement>(null);
+  const column3Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const columns = [column1Ref.current, column2Ref.current, column3Ref.current];
+    
     const ctx = gsap.context(() => {
-      const images = galleryRef.current?.querySelectorAll('.gallery-img');
-      if (!images) return;
-
-      // Initial placement with high depth spacing
-      images.forEach((img, i) => {
-        const depth = i * 600; // dramatically increased spacing
-        gsap.set(img, {
-          rotateY: i * 15, // subtle rotation
-          z: -depth,
-          scale: 1 - i * 0.05,
-          opacity: 1 - i * 0.1,
-          transformOrigin: "center center"
+      columns.forEach((col, i) => {
+        if (!col) return;
+        
+        // Different speeds for each column to create parallax collage feel
+        const speed = 100 + (i * 150); 
+        
+        gsap.to(col, {
+          y: -speed,
+          ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          }
         });
       });
 
-      // Pinned Scroll Animation
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top top",
-          end: "+=400%", // Longer scroll for more depth
-          pin: true,
-          scrub: 1.5,
-        }
-      });
-
-      // Move the entire stack forward as we scroll
-      tl.to(galleryRef.current, {
-        z: 8000, // Move forward dramatically
-        ease: "none",
-        duration: 1
-      });
-
-      // Text Animation
-      gsap.fromTo(textRef.current, 
-        { opacity: 0, y: 100, scale: 0.8 },
-        {
-          opacity: 1,
-          y: 0,
-          scale: 1,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "top+=40% top",
-            scrub: 1
+      // Reveal images on scroll
+      const images = containerRef.current?.querySelectorAll('.collage-img');
+      images?.forEach((img) => {
+        gsap.fromTo(img, 
+          { opacity: 0, scale: 0.8, y: 50 },
+          { 
+            opacity: 1, 
+            scale: 1, 
+            y: 0, 
+            duration: 1,
+            scrollTrigger: {
+              trigger: img,
+              start: "top 90%",
+              toggleActions: "play none none reverse"
+            }
           }
-        }
-      );
+        );
+      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
-  return (
-    <div ref={containerRef} className="relative w-full h-screen bg-black overflow-hidden perspective-2000">
-      {/* Background Ambience */}
-      <div className="absolute inset-0 bg-radial-gradient-cosmic opacity-50" />
+  // Split images into 3 columns for the collage
+  const col1 = GALLERY_IMAGES.slice(0, 7);
+  const col2 = GALLERY_IMAGES.slice(7, 13);
+  const col3 = GALLERY_IMAGES.slice(13, 20);
 
-      {/* Gallery Wrapper (Camera Distance) */}
-      <div className="absolute inset-0 flex items-center justify-center translate-z-[-1200px]">
-        <div 
-          ref={galleryRef}
-          className="relative w-full h-full flex items-center justify-center preserve-3d"
-        >
-          {GALLERY_IMAGES.map((src, i) => (
-            <div 
-              key={i}
-              className="gallery-img absolute w-[350px] md:w-[450px] aspect-[4/5] rounded-[30px] overflow-hidden border border-white/10 glass-card preserve-3d"
-              style={{ transformStyle: 'preserve-3d' }}
-            >
-              <img 
-                src={src} 
-                alt={`Gallery ${i}`} 
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-            </div>
-          ))}
+  return (
+    <section ref={containerRef} className="relative w-full py-20 md:py-40 bg-black overflow-hidden">
+      {/* Dynamic Background */}
+      <div className="absolute inset-0 bg-radial-gradient-cosmic opacity-30" />
+      
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="mb-20 text-center">
+          <h2 className="text-5xl md:text-8xl font-black text-white tracking-tighter leading-none">
+            CRAFTED. <span className="text-primary italic">LAYERED.</span> <br/> PERFECTED.
+          </h2>
+          <p className="mt-6 text-white/50 text-lg md:text-xl font-medium tracking-wide max-w-2xl mx-auto">
+            A visual symphony of flavor and texture, captured in every frame of our craft.
+          </p>
+        </div>
+
+        {/* Floating Collage Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+          {/* Column 1 */}
+          <div ref={column1Ref} className="flex flex-col gap-6 md:gap-10 pt-20">
+            {col1.map((src, i) => (
+              <div key={i} className="collage-img group relative rounded-3xl overflow-hidden aspect-[3/4] border border-white/10 glass-card">
+                <img src={src} alt="Gallery 1" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+              </div>
+            ))}
+          </div>
+
+          {/* Column 2 */}
+          <div ref={column2Ref} className="flex flex-col gap-6 md:gap-10">
+            {col2.map((src, i) => (
+              <div key={i} className="collage-img group relative rounded-3xl overflow-hidden aspect-[4/5] border border-white/10 glass-card">
+                <img src={src} alt="Gallery 2" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+              </div>
+            ))}
+          </div>
+
+          {/* Column 3 */}
+          <div ref={column3Ref} className="flex flex-col gap-6 md:gap-10 pt-40">
+            {col3.map((src, i) => (
+              <div key={i} className="collage-img group relative rounded-3xl overflow-hidden aspect-[3/4] border border-white/10 glass-card">
+                <img src={src} alt="Gallery 3" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Center Text Overlay */}
-      <div 
-        ref={textRef}
-        className="absolute inset-0 flex items-center justify-center pointer-events-none z-50"
-      >
-        <h2 className="text-4xl md:text-8xl font-black text-white text-glow text-center leading-none tracking-tighter drop-shadow-2xl">
-          CRAFTED. <br/>
-          LAYERED. <br/>
-          <span className="text-primary italic">PERFECTED.</span>
-        </h2>
+      {/* Decorative Text in background */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 -rotate-90 origin-left text-[20vh] font-black text-white/5 pointer-events-none select-none">
+        GALLERY
       </div>
-
-      {/* Floating Particles or Vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black pointer-events-none" />
-    </div>
+      <div className="absolute bottom-0 right-0 text-[20vh] font-black text-white/5 pointer-events-none select-none translate-y-1/4">
+        MOYAAAH
+      </div>
+    </section>
   );
 }

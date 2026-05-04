@@ -49,7 +49,9 @@ export default function BurgerScrollSequence() {
     
     const hRatio = canvas.width / img.width;
     const vRatio = canvas.height / img.height;
-    const ratio = Math.min(hRatio, vRatio); // Use min to fit the entire image
+    const padding = 0.85; // 15% visual padding to prevent edge touching
+    const ratio = Math.min(hRatio, vRatio) * padding;
+    
     const centerShift_x = (canvas.width - img.width * ratio) / 2;
     const centerShift_y = (canvas.height - img.height * ratio) / 2;
     
@@ -176,18 +178,18 @@ export default function BurgerScrollSequence() {
         ref={textContainerRef}
         className="absolute inset-0 flex items-center justify-center pointer-events-none z-20"
       >
-        <div className="relative w-full max-w-4xl px-10 text-center">
-          <h2 className="story-text absolute inset-0 flex items-center justify-center text-4xl md:text-7xl font-black text-white text-glow leading-tight opacity-0">
-            Precision in every layer
+        <div className="relative w-full max-w-5xl px-10 text-center">
+          <h2 className="story-text absolute inset-0 flex items-center justify-center text-5xl md:text-8xl font-black text-white tracking-tighter leading-tight opacity-0 italic">
+            Precision <br/> in every layer
           </h2>
-          <h2 className="story-text absolute inset-0 flex items-center justify-center text-4xl md:text-7xl font-black text-white text-glow leading-tight opacity-0">
-            Fresh ingredients. <br/> Perfect balance.
+          <h2 className="story-text absolute inset-0 flex items-center justify-center text-5xl md:text-8xl font-black text-white tracking-tighter leading-tight opacity-0">
+            Fresh ingredients. <br/> <span className="text-primary italic">Perfect balance.</span>
           </h2>
-          <h2 className="story-text absolute inset-0 flex items-center justify-center text-5xl md:text-8xl font-black text-primary text-glow leading-tight opacity-0">
-            Built to satisfy. <br/> Designed to impress.
+          <h2 className="story-text absolute inset-0 flex items-center justify-center text-6xl md:text-9xl font-black text-primary tracking-tighter leading-tight opacity-0 italic drop-shadow-[0_0_30px_rgba(255,195,0,0.3)]">
+            Built to satisfy.
           </h2>
-          <h2 className="story-text absolute inset-0 flex items-center justify-center text-4xl md:text-7xl font-black text-white text-glow leading-tight opacity-0">
-            Moyaaah — <br/> Beyond the ordinary
+          <h2 className="story-text absolute inset-0 flex items-center justify-center text-5xl md:text-8xl font-black text-white tracking-tighter leading-tight opacity-0">
+            Moyaaah — <br/> <span className="text-primary">Beyond ordinary</span>
           </h2>
         </div>
       </div>
