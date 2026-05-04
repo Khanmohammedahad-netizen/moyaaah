@@ -74,7 +74,7 @@ export default function BurgerScrollSequence() {
           <Suspense fallback={null}>
             <Stage />
             <BurgerModel />
-            <Environment preset="studio" intensity={0.5} />
+            <Environment preset="studio" />
             <ContactShadows 
               position={[0, -1.5, 0]} 
               opacity={0.4} 
