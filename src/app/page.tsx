@@ -1,10 +1,10 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import BurgerScrollSequence from "@/components/BurgerScrollSequence";
+import AmbienceExperience from "@/components/AmbienceExperience";
 import RevolvingGallery from "@/components/RevolvingGallery";
-import Story from "@/components/Story";
 import Menu from "@/components/Menu";
 import Ambience from "@/components/Ambience";
+import CinematicEnd from "@/components/CinematicEnd";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -14,13 +14,13 @@ export default function Home() {
       <Hero />
       
       {/* Cinematic Sequences */}
-      <BurgerScrollSequence />
+      <AmbienceExperience />
       <RevolvingGallery />
       
       {/* Site Content */}
-      <Story />
       <Menu />
       <Ambience />
+      <CinematicEnd />
       <Footer />
     </main>
   );
