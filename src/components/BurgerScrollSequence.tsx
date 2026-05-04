@@ -49,7 +49,7 @@ export default function BurgerScrollSequence() {
     
     const hRatio = canvas.width / img.width;
     const vRatio = canvas.height / img.height;
-    const ratio = Math.max(hRatio, vRatio);
+    const ratio = Math.min(hRatio, vRatio); // Use min to fit the entire image
     const centerShift_x = (canvas.width - img.width * ratio) / 2;
     const centerShift_y = (canvas.height - img.height * ratio) / 2;
     
@@ -83,9 +83,9 @@ export default function BurgerScrollSequence() {
       duration: 1
     }, 0);
 
-    // Depth effect: scale canvas
+    // Depth effect: subtle scale
     tl.to(canvasRef.current, {
-      scale: 1.15,
+      scale: 1.05,
       ease: "none",
       duration: 1
     }, 0);

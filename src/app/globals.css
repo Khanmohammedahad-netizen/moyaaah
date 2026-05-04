@@ -104,3 +104,5 @@ h1, h2, h3, h4, h5, h6 {
 .translate-z-\[-1000px\] { transform: translateZ(-1000px); }
 .bg-radial-gradient-cosmic { background: radial-gradient(circle, #1a1a1a 0%, #000000 100%); }
 .bg-radial-gradient-vignette { background: radial-gradient(circle, transparent 40%, black 100%); }
+
+.translate-z-\[-1200px\] { transform: translateZ(-1200px); }

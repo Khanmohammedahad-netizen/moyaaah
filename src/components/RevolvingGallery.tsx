@@ -18,20 +18,15 @@ export default function RevolvingGallery() {
       const images = galleryRef.current?.querySelectorAll('.gallery-img');
       if (!images) return;
 
-      const totalImages = images.length;
-      const angleStep = (Math.PI * 2) / totalImages;
-      const radius = 600; // Radius of the circle
-
-      // Initial placement in 3D circle
+      // Initial placement with high depth spacing
       images.forEach((img, i) => {
-        const angle = i * angleStep;
+        const depth = i * 600; // dramatically increased spacing
         gsap.set(img, {
-          x: Math.sin(angle) * radius,
-          z: Math.cos(angle) * radius,
-          rotationY: (angle * 180) / Math.PI,
-          opacity: Math.cos(angle) > 0 ? 1 : 0.2, // Fade those in the back
-          scale: Math.cos(angle) > 0 ? 1 : 0.8,
-          filter: Math.cos(angle) > 0 ? "blur(0px)" : "blur(10px)"
+          rotateY: i * 15, // subtle rotation
+          z: -depth,
+          scale: 1 - i * 0.05,
+          opacity: 1 - i * 0.1,
+          transformOrigin: "center center"
         });
       });
 
@@ -40,40 +35,18 @@ export default function RevolvingGallery() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=300%",
+          end: "+=400%", // Longer scroll for more depth
           pin: true,
           scrub: 1.5,
         }
       });
 
-      // Rotate the entire gallery container
+      // Move the entire stack forward as we scroll
       tl.to(galleryRef.current, {
-        rotationY: 360,
+        z: 8000, // Move forward dramatically
         ease: "none",
         duration: 1
       });
-
-      // Dynamic adjustments for each image during rotation
-      // This is slightly complex to do in a single scrub, but we can animate properties based on rotation
-      tl.to({}, {
-        onUpdate: () => {
-          const rotation = gsap.getProperty(galleryRef.current, "rotationY") as number;
-          const rad = (rotation * Math.PI) / 180;
-          
-          images.forEach((img, i) => {
-            const angle = i * angleStep + rad;
-            const cos = Math.cos(angle);
-            
-            gsap.set(img, {
-              opacity: cos > 0.5 ? 1 : cos > 0 ? 0.5 : 0.1,
-              scale: cos > 0 ? 0.8 + cos * 0.4 : 0.7,
-              filter: cos > 0.6 ? "blur(0px)" : `blur(${(1 - cos) * 10}px)`,
-              zIndex: Math.round(cos * 100)
-            });
-          });
-        },
-        duration: 1
-      }, 0);
 
       // Text Animation
       gsap.fromTo(textRef.current, 
@@ -85,7 +58,7 @@ export default function RevolvingGallery() {
           scrollTrigger: {
             trigger: containerRef.current,
             start: "top top",
-            end: "top+=50% top",
+            end: "top+=40% top",
             scrub: 1
           }
         }
@@ -100,8 +73,8 @@ export default function RevolvingGallery() {
       {/* Background Ambience */}
       <div className="absolute inset-0 bg-radial-gradient-cosmic opacity-50" />
 
-      {/* Gallery Container */}
-      <div className="absolute inset-0 flex items-center justify-center translate-z-[-1000px]">
+      {/* Gallery Wrapper (Camera Distance) */}
+      <div className="absolute inset-0 flex items-center justify-center translate-z-[-1200px]">
         <div 
           ref={galleryRef}
           className="relative w-full h-full flex items-center justify-center preserve-3d"
@@ -109,7 +82,7 @@ export default function RevolvingGallery() {
           {GALLERY_IMAGES.map((src, i) => (
             <div 
               key={i}
-              className="gallery-img absolute w-[300px] h-[400px] md:w-[400px] md:h-[500px] rounded-[30px] overflow-hidden border border-white/10 glass-card preserve-3d"
+              className="gallery-img absolute w-[350px] md:w-[450px] aspect-[4/5] rounded-[30px] overflow-hidden border border-white/10 glass-card preserve-3d"
               style={{ transformStyle: 'preserve-3d' }}
             >
               <img 
@@ -129,7 +102,7 @@ export default function RevolvingGallery() {
         ref={textRef}
         className="absolute inset-0 flex items-center justify-center pointer-events-none z-50"
       >
-        <h2 className="text-5xl md:text-9xl font-black text-white text-glow text-center leading-none tracking-tighter">
+        <h2 className="text-4xl md:text-8xl font-black text-white text-glow text-center leading-none tracking-tighter drop-shadow-2xl">
           CRAFTED. <br/>
           LAYERED. <br/>
           <span className="text-primary italic">PERFECTED.</span>
