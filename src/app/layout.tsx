@@ -19,7 +19,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} ${outfit.variable} antialiased`}>
+      <body className={`${inter.variable} ${outfit.variable} antialiased bg-[#050505]`}>
+        <div className="cinematic-grain" />
         <SmoothScroll>
           {children}
         </SmoothScroll>
