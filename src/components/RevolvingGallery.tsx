@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const GALLERY_IMAGES = Array.from({ length: 25 }, (_, i) => `/ambience/ambience_${(i + 1).toString().padStart(2, '0')}.webp`);
+const GALLERY_IMAGES = Array.from({ length: 20 }, (_, i) => `/ambience/ambience_${(i + 1).toString().padStart(2, '0')}.webp`);
 
 export default function RevolvingGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,9 +60,9 @@ export default function RevolvingGallery() {
   }, []);
 
   // Split images into 3 columns for the collage
-  const col1 = GALLERY_IMAGES.slice(0, 8);
-  const col2 = GALLERY_IMAGES.slice(8, 16);
-  const col3 = GALLERY_IMAGES.slice(16, 25);
+  const col1 = GALLERY_IMAGES.slice(0, 7);
+  const col2 = GALLERY_IMAGES.slice(7, 13);
+  const col3 = GALLERY_IMAGES.slice(13, 20);
 
   return (
     <section ref={containerRef} className="relative w-full py-20 md:py-40 bg-black overflow-hidden">
