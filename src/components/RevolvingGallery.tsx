@@ -6,7 +6,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const GALLERY_IMAGES = Array.from({ length: 20 }, (_, i) => `/gallery/img_${(i + 1).toString().padStart(4, '0')}.png`);
+const GALLERY_IMAGES = Array.from({ length: 20 }, (_, i) => `/gallery/img_${(i + 1).toString().padStart(4, '0')}.webp`);
 
 export default function RevolvingGallery() {
   const containerRef = useRef<HTMLDivElement>(null);

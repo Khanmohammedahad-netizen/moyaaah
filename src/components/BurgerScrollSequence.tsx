@@ -7,7 +7,7 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const TOTAL_FRAMES = 25;
-const FRAME_PATH = (index: number) => `/burger/frame_${index.toString().padStart(4, '0')}.png`;
+const FRAME_PATH = (index: number) => `/burger/frame_${index.toString().padStart(4, '0')}.webp`;
 
 export default function BurgerScrollSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
