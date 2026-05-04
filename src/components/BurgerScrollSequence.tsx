@@ -15,8 +15,9 @@ export default function BurgerScrollSequence() {
   const textContainerRef = useRef<HTMLDivElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadProgress, setLoadProgress] = useState(0);
 
-  // Preload frames
+  // Preload frames with progress tracking
   useEffect(() => {
     const loadedImages: HTMLImageElement[] = [];
     let loadedCount = 0;
@@ -26,9 +27,11 @@ export default function BurgerScrollSequence() {
       img.src = FRAME_PATH(i);
       img.onload = () => {
         loadedCount++;
+        setLoadProgress(Math.round((loadedCount / TOTAL_FRAMES) * 100));
         if (loadedCount === TOTAL_FRAMES) {
           setIsLoading(false);
-          render(1); // Initial render
+          // Small delay to ensure state updates
+          setTimeout(() => render(1), 100);
         }
       };
       loadedImages.push(img);
@@ -39,22 +42,25 @@ export default function BurgerScrollSequence() {
   const render = (frame: number) => {
     const canvas = canvasRef.current;
     if (!canvas || images.length === 0) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: false }); // Performance optimization
     if (!ctx) return;
 
-    const img = images[Math.round(frame) - 1] || images[0];
-    
-    // Clear and draw with cover fit
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Use floor to get current frame, but could potentially do more if we had more frames
+    const index = Math.max(0, Math.min(TOTAL_FRAMES - 1, Math.floor(frame) - 1));
+    const img = images[index];
+    if (!img) return;
     
     const hRatio = canvas.width / img.width;
     const vRatio = canvas.height / img.height;
-    const padding = 0.85; // 15% visual padding to prevent edge touching
+    const padding = 0.8; // Comfortable visual padding
     const ratio = Math.min(hRatio, vRatio) * padding;
     
     const centerShift_x = (canvas.width - img.width * ratio) / 2;
     const centerShift_y = (canvas.height - img.height * ratio) / 2;
     
+    // Smooth drawing
+    ctx.fillStyle = "#000000";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(img, 0, 0, img.width, img.height,
       centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
   };
@@ -62,78 +68,82 @@ export default function BurgerScrollSequence() {
   useEffect(() => {
     if (isLoading || images.length === 0) return;
 
-    // Canvas Frame Animation
     const obj = { frame: 1 };
     
+    // Main Timeline with increased scrub for momentum
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: containerRef.current,
         start: "top top",
-        end: "+=300%",
+        end: "+=400%", // Longer scroll for more control
         pin: true,
-        scrub: 1,
+        scrub: 2.5, // High scrub value for "Figma-smooth" weight
         onUpdate: (self) => {
+          // Sync render to GSAP progression
           render(obj.frame);
         }
       }
     });
 
+    // Frame Progression with ultra-smooth easing
     tl.to(obj, {
       frame: TOTAL_FRAMES,
-      snap: "frame",
-      ease: "none",
+      ease: "power2.inOut",
       duration: 1
     }, 0);
 
-    // Depth effect: subtle scale
+    // Subtle scale and position drift for depth
     tl.to(canvasRef.current, {
-      scale: 1.05,
-      ease: "none",
+      scale: 1.08,
+      y: -20,
+      ease: "power1.inOut",
       duration: 1
     }, 0);
 
-    // Story Text Timeline
+    // Story Text Timeline with "Figma-level" refined transitions
     const phases = [
-      { text: "Precision in every layer", start: 0, end: 0.25 },
-      { text: "Fresh ingredients. Perfect balance.", start: 0.25, end: 0.5 },
-      { text: "Built to satisfy. Designed to impress.", start: 0.5, end: 0.75 },
-      { text: "Moyaaah — Beyond the ordinary", start: 0.75, end: 1 }
+      { text: "Precision in every layer", start: 0, end: 0.2 },
+      { text: "Fresh ingredients. Perfect balance.", start: 0.25, end: 0.45 },
+      { text: "Built to satisfy. Designed to impress.", start: 0.5, end: 0.7 },
+      { text: "Moyaaah — Beyond the ordinary", start: 0.75, end: 0.95 }
     ];
 
     const textElements = textContainerRef.current?.querySelectorAll('.story-text');
     
     textElements?.forEach((el, i) => {
       const phase = phases[i];
-      // Fade in and move up
+      
+      // Reveal
       gsap.fromTo(el, 
-        { opacity: 0, y: 50, scale: 0.9 },
+        { opacity: 0, y: 30, filter: "blur(10px)", scale: 0.95 },
         { 
           opacity: 1, 
           y: 0, 
-          scale: phase.start >= 0.5 ? 1.1 : 1, // Phase 3 is slightly larger
+          filter: "blur(0px)",
+          scale: 1,
           scrollTrigger: {
             trigger: containerRef.current,
-            start: `top+=${phase.start * 300}% top`,
-            end: `top+=${phase.end * 300}% top`,
-            scrub: 0.5,
+            start: `top+=${phase.start * 400}% top`,
+            end: `top+=${(phase.start + 0.1) * 400}% top`,
+            scrub: 1,
             toggleActions: "play reverse play reverse"
           }
         }
       );
 
-      // Fade out before next phase starts (except last one)
-      if (i < phases.length - 1) {
-        gsap.to(el, {
-          opacity: 0,
-          y: -30,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: `top+=${(phase.end - 0.05) * 300}% top`,
-            end: `top+=${phase.end * 300}% top`,
-            scrub: 0.5
-          }
-        });
-      }
+      // Dismiss
+      gsap.to(el, {
+        opacity: 0,
+        y: -30,
+        filter: "blur(10px)",
+        scale: 1.05,
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: `top+=${(phase.end - 0.05) * 400}% top`,
+          end: `top+=${phase.end * 400}% top`,
+          scrub: 1
+        }
+      });
     });
 
     return () => {
@@ -141,7 +151,7 @@ export default function BurgerScrollSequence() {
     };
   }, [isLoading, images]);
 
-  // Update canvas size on mount/resize
+  // Handle Resize
   useEffect(() => {
     const handleResize = () => {
       if (canvasRef.current) {
@@ -157,18 +167,25 @@ export default function BurgerScrollSequence() {
 
   return (
     <div ref={containerRef} className="relative w-full h-screen bg-black overflow-hidden">
-      {/* Canvas for burger animation */}
+      {/* Canvas */}
       <canvas 
         ref={canvasRef} 
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain"
       />
 
-      {/* Loading State */}
+      {/* Premium Loader */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-black z-50">
-          <div className="flex flex-col items-center gap-4">
-             <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-             <span className="text-primary font-black tracking-widest text-xs">PRELOADING MOYAAAH...</span>
+          <div className="flex flex-col items-center gap-6">
+             <div className="relative w-64 h-1 bg-white/10 rounded-full overflow-hidden">
+               <div 
+                 className="absolute top-0 left-0 h-full bg-primary transition-all duration-300 ease-out" 
+                 style={{ width: `${loadProgress}%` }}
+               />
+             </div>
+             <span className="text-primary font-black tracking-[0.3em] text-[10px] uppercase">
+               Synchronizing Flavor {loadProgress}%
+             </span>
           </div>
         </div>
       )}
@@ -185,7 +202,7 @@ export default function BurgerScrollSequence() {
           <h2 className="story-text absolute inset-0 flex items-center justify-center text-5xl md:text-8xl font-black text-white tracking-tighter leading-tight opacity-0">
             Fresh ingredients. <br/> <span className="text-primary italic">Perfect balance.</span>
           </h2>
-          <h2 className="story-text absolute inset-0 flex items-center justify-center text-6xl md:text-9xl font-black text-primary tracking-tighter leading-tight opacity-0 italic drop-shadow-[0_0_30px_rgba(255,195,0,0.3)]">
+          <h2 className="story-text absolute inset-0 flex items-center justify-center text-6xl md:text-9xl font-black text-primary tracking-tighter leading-tight opacity-0 italic">
             Built to satisfy.
           </h2>
           <h2 className="story-text absolute inset-0 flex items-center justify-center text-5xl md:text-8xl font-black text-white tracking-tighter leading-tight opacity-0">
@@ -194,8 +211,8 @@ export default function BurgerScrollSequence() {
         </div>
       </div>
 
-      {/* Subtle Vignette */}
-      <div className="absolute inset-0 bg-radial-gradient-vignette pointer-events-none opacity-60" />
+      {/* Vignette Overlay */}
+      <div className="absolute inset-0 bg-radial-gradient-vignette pointer-events-none opacity-40" />
     </div>
   );
 }
