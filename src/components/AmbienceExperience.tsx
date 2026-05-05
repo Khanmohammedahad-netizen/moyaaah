@@ -64,11 +64,11 @@ export default function AmbienceExperience() {
           {/* Photo Slides */}
           {AMBIENCE_PICS.map((src, i) => (
             <div key={i} className="h-screen w-screen flex items-center justify-center flex-shrink-0 px-10 md:px-40 relative group">
-              <div className="relative w-full h-[70vh] rounded-3xl overflow-hidden border border-white/10 glass-card">
-                <img 
-                  src={src} 
-                  alt={`Ambience ${i + 2}`} 
-                  className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+              <div className="relative w-full h-[70vh] rounded-3xl overflow-hidden border border-white/10 glass-card bg-neutral-950">
+                <img
+                  src={src}
+                  alt={`Ambience ${i + 2}`}
+                  className="w-full h-full object-contain transition-transform duration-1000 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
               </div>
