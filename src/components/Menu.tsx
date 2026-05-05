@@ -13,7 +13,7 @@ const MENU_ITEMS = [
     name: "Smashed Buff Burger",
     description: "Gooey melted cheese on smashed juicy buff patties. A classic for the brave.",
     price: "₹499",
-    image: "/ambience/ambience_10.webp",
+    image: "/ambience/ambience_10.png",
     tag: "BEST SELLER",
     icon: <Flame className="text-orange-500" size={16} />
   },
@@ -22,7 +22,7 @@ const MENU_ITEMS = [
     name: "Buff Ribs",
     description: "Juicy ribs glazed with our signature MOYAAAH Steak Sauce. Falls off the bone.",
     price: "₹899",
-    image: "/ambience/ambience_11.webp",
+    image: "/ambience/ambience_11.png",
     tag: "MUST TRY",
     icon: <Star className="text-yellow-500" size={16} />
   },
@@ -31,7 +31,7 @@ const MENU_ITEMS = [
     name: "Mango Harissa Burger",
     description: "A spicy-sweet cosmic blast. Smashed patty with mango harissa glaze.",
     price: "₹549",
-    image: "/ambience/ambience_12.webp",
+    image: "/ambience/ambience_12.png",
     tag: "NEW RELEASE",
     icon: <Zap className="text-blue-500" size={16} />
   }

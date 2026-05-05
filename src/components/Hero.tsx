@@ -53,7 +53,7 @@ export default function Hero() {
       <div className="absolute inset-0 z-0">
         <img 
           ref={imageRef}
-          src="/ambience/ambience_01.webp" 
+          src="/ambience/ambience_01.png"
           alt="Moyaaah Ambience" 
           className="w-full h-full object-cover opacity-60"
         />

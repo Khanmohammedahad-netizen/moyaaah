@@ -33,11 +33,11 @@ export default function CinematicEnd() {
       <div className="container mx-auto">
         <div className="grid md:grid-cols-2 gap-10">
           <div className="end-img relative rounded-[40px] overflow-hidden aspect-video border border-white/10 glass-card">
-            <img src="/ambience/ambience_14.webp" alt="Ambience Final 1" className="w-full h-full object-cover" />
+            <img src="/ambience/ambience_14.png" alt="Ambience Final 1" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           </div>
           <div className="end-img relative rounded-[40px] overflow-hidden aspect-video border border-white/10 glass-card">
-            <img src="/ambience/ambience_15.webp" alt="Ambience Final 2" className="w-full h-full object-cover" />
+            <img src="/ambience/ambience_15.png" alt="Ambience Final 2" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           </div>
         </div>

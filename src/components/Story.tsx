@@ -73,8 +73,8 @@ export default function Story() {
             <div className="absolute -inset-4 bg-primary/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             <div className="glass-card overflow-hidden aspect-video relative">
               <img 
-                src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&q=80&w=1000" 
-                alt="Our Kitchen" 
+                src="/ambience/ambience_14.png"
+                alt="Moyaaah Interior"
                 className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />

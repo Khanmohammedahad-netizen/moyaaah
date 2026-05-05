@@ -12,7 +12,7 @@ export default function Ambience() {
              <div className="absolute -inset-10 bg-primary/10 blur-[100px] rounded-full" />
              <div className="relative aspect-square rounded-[60px] overflow-hidden border border-white/5">
                 <img 
-                  src="/ambience/ambience_13.webp" 
+                  src="/ambience/ambience_13.png"
                   alt="Interior" 
                   className="w-full h-full object-cover"
                 />

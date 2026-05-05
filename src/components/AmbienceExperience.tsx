@@ -7,13 +7,13 @@ import { ScrollTrigger } from 'gsap/dist/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 const AMBIENCE_PICS = [
-  '/ambience/ambience_02.webp',
-  '/ambience/ambience_03.webp',
-  '/ambience/ambience_04.webp',
-  '/ambience/ambience_05.webp',
-  '/ambience/ambience_06.webp',
-  '/ambience/ambience_07.webp',
-  '/ambience/ambience_08.webp',
+  '/ambience/ambience_02.png',
+  '/ambience/ambience_03.png',
+  '/ambience/ambience_04.png',
+  '/ambience/ambience_05.png',
+  '/ambience/ambience_06.png',
+  '/ambience/ambience_07.png',
+  '/ambience/ambience_08.png',
 ];
 
 export default function AmbienceExperience() {
@@ -70,11 +70,7 @@ export default function AmbienceExperience() {
                   alt={`Ambience ${i + 2}`} 
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-                <div className="absolute bottom-10 left-10 text-white">
-                  <span className="text-primary font-bold text-sm tracking-[0.5em] uppercase mb-2 block">Interior Detail</span>
-                  <h4 className="text-2xl md:text-4xl font-black tracking-tight">MOYAAAH AMBIENCE {i + 1}</h4>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60" />
               </div>
             </div>
           ))}
