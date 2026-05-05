@@ -64,7 +64,7 @@ export default function AmbienceExperience() {
           {/* Photo Slides */}
           {AMBIENCE_PICS.map((src, i) => (
             <div key={i} className="h-screen w-screen flex items-center justify-center flex-shrink-0 px-10 md:px-40 relative group">
-              <div className="relative w-full h-[70vh] rounded-3xl overflow-hidden border border-white/10 glass-card bg-neutral-950">
+              <div className="relative w-full h-[45vh] md:h-[70vh] rounded-3xl overflow-hidden border border-white/10 glass-card bg-neutral-950">
                 <img
                   src={src}
                   alt={`Ambience ${i + 2}`}

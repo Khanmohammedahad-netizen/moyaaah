@@ -79,10 +79,20 @@ export default function RevolvingGallery() {
           </p>
         </div>
 
-        {/* Floating Collage Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10">
+        {/* Mobile Grid — 2 cols, 6 images, square aspect */}
+        <div className="grid grid-cols-2 gap-3 md:hidden">
+          {GALLERY_IMAGES.slice(0, 6).map((src, i) => (
+            <div key={i} className="collage-img group relative rounded-2xl overflow-hidden aspect-square border border-white/10 glass-card">
+              <img src={src} alt={`Gallery ${i + 1}`} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop Parallax Collage — 3 cols */}
+        <div className="hidden md:grid grid-cols-3 gap-10">
           {/* Column 1 */}
-          <div ref={column1Ref} className="flex flex-col gap-6 md:gap-10 pt-20">
+          <div ref={column1Ref} className="flex flex-col gap-10 pt-20">
             {col1.map((src, i) => (
               <div key={i} className="collage-img group relative rounded-3xl overflow-hidden aspect-[3/4] border border-white/10 glass-card">
                 <img src={src} alt="Gallery 1" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -92,7 +102,7 @@ export default function RevolvingGallery() {
           </div>
 
           {/* Column 2 */}
-          <div ref={column2Ref} className="flex flex-col gap-6 md:gap-10">
+          <div ref={column2Ref} className="flex flex-col gap-10">
             {col2.map((src, i) => (
               <div key={i} className="collage-img group relative rounded-3xl overflow-hidden aspect-[4/5] border border-white/10 glass-card">
                 <img src={src} alt="Gallery 2" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
@@ -102,7 +112,7 @@ export default function RevolvingGallery() {
           </div>
 
           {/* Column 3 */}
-          <div ref={column3Ref} className="flex flex-col gap-6 md:gap-10 pt-40">
+          <div ref={column3Ref} className="flex flex-col gap-10 pt-40">
             {col3.map((src, i) => (
               <div key={i} className="collage-img group relative rounded-3xl overflow-hidden aspect-[3/4] border border-white/10 glass-card">
                 <img src={src} alt="Gallery 3" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
